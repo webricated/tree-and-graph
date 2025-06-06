@@ -1,14 +1,10 @@
-from weasyprint import HTML
-import os
 
-# Your complete HTML content with embedded CSS
-html_content = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSA Cheatsheet for Outlier</title>
+    <title>DSA Cheatsheet</title>
     <style>
         /* --- General Styles & Typography --- */
         body {
@@ -497,24 +493,3 @@ void postorder(Node root) {
 
 </body>
 </html>
-"""
-
-output_filename = "DSA_Cheatsheet_for_Outlier.pdf"
-
-print(f"Generating PDF: {output_filename}...")
-
-try:
-    # Use HTML(string=...) to render the HTML content directly
-    HTML(string=html_content).write_pdf(output_filename)
-    print(f"PDF generated successfully: {output_filename}")
-    print("\nNote: The exact page count depends on the rendering engine, paper size, and margins.")
-    print("I've adjusted the `@page` margin to `1.5cm` to help fit more content per page.")
-    print("If you need more pages, consider increasing font sizes, line heights, or margins in the CSS.")
-    print("For fewer pages, reduce these values. You can also uncomment `page-break-after: always;` on `.topic` for each topic to start a new page.")
-
-except Exception as e:
-    print(f"An error occurred: {e}")
-    print("\nCommon issues:")
-    print("1. Missing system dependencies (Cairo, Pango, GDK-Pixbuf). Refer to WeasyPrint documentation for installation.")
-    print("2. 'WeasyPrint' Python package not installed (`pip install WeasyPrint`).")
-    print("3. Ensure you have the necessary system libraries for font rendering and graphics.")
