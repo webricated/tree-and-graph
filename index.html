@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,43 +133,6 @@
                 font-size: 1.2rem;
             }
         }
-
-        /* --- Print-specific adjustments (WeasyPrint respects these) --- */
-        @page {
-            size: A4; /* Or Letter */
-            margin: 1.5cm; /* Adjusted margin to fit more content per page */
-            @bottom-center {
-                content: "Page " counter(page) " of " counter(pages);
-                font-family: sans-serif;
-                font-size: 9pt;
-                color: #6c757d;
-            }
-            @top-center {
-                content: "Data Structures & Algorithms Cheatsheet";
-                font-family: sans-serif;
-                font-size: 10pt;
-                color: #6c757d;
-            }
-        }
-        /* Ensure code blocks don't break awkwardly across pages */
-        pre {
-            page-break-inside: avoid;
-        }
-        /* Ensure headings stay with their content */
-        h2, h3 {
-            page-break-after: avoid;
-        }
-        /*
-        Uncomment the following rule if you want *each* main topic to start on a new page.
-        This will increase the page count significantly (minimum 12 pages for 12 topics).
-        .topic {
-             page-break-after: always;
-        }
-        .topic:last-child {
-            page-break-after: auto;
-        }
-        */
-
     </style>
 </head>
 <body>
@@ -178,8 +140,8 @@
     <div class="container">
         <header>
             <h1>Data Structures & Algorithms Cheatsheet</h1>
-<!--             <p class="subtitle">For Contributors on Outlier's Model Playground</p>
-        </header> -->
+            <p class="subtitle">For Contributors on Outlier's Model Playground</p>
+        </header>
 
         <main>
             <!-- Topic 1: Dijkstra's Algorithm -->
@@ -468,7 +430,7 @@ void postorder(Node root) {
                 </ul>
                 <h3>BFS (Breadth-First Search)</h3>
                 <ul>
-                    <li><strong>Structure:</b> Uses a Queue.</li>
+                    <li><strong>Structure:</strong> Uses a Queue.</li>
                     <li><strong>Pathfinding:</strong> Finds the shortest path in an <strong>unweighted</strong> graph.</li>
                     <li><strong>Exploration:</strong> Explores level by level (all neighbors of a node before moving to the next level).</li>
                     <li><strong>Use Cases:</strong> Shortest path in unweighted graphs (like LeetCode's "Rotting Oranges"), web crawlers.</li>
