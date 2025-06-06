@@ -1,0 +1,520 @@
+from weasyprint import HTML
+import os
+
+# Your complete HTML content with embedded CSS
+html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Cheatsheet for Outlier</title>
+    <style>
+        /* --- General Styles & Typography --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 2rem 3rem;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+
+        header .subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+
+        /* --- Topic Styles --- */
+        .topic {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .topic:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .topic h2 {
+            font-size: 1.8rem;
+            color: #0056b3; /* A nice blue for titles */
+            margin-bottom: 1.5rem;
+        }
+
+        .topic h3 {
+            font-size: 1.3rem;
+            color: #343a40;
+            border-left: 3px solid #007bff;
+            padding-left: 10px;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p, ul {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Code Blocks --- */
+        pre {
+            background-color: #f1f3f5;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto; /* Handle long lines of code */
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        code {
+            color: #212529;
+        }
+
+        /* --- Links --- */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .video-link {
+            display: block;
+            margin-top: 1rem;
+            font-style: italic;
+            color: #495057;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .topic h2 {
+                font-size: 1.5rem;
+            }
+            .topic h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* --- Print-specific adjustments (WeasyPrint respects these) --- */
+        @page {
+            size: A4; /* Or Letter */
+            margin: 1.5cm; /* Adjusted margin to fit more content per page */
+            @bottom-center {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: sans-serif;
+                font-size: 9pt;
+                color: #6c757d;
+            }
+            @top-center {
+                content: "Data Structures & Algorithms Cheatsheet";
+                font-family: sans-serif;
+                font-size: 10pt;
+                color: #6c757d;
+            }
+        }
+        /* Ensure code blocks don't break awkwardly across pages */
+        pre {
+            page-break-inside: avoid;
+        }
+        /* Ensure headings stay with their content */
+        h2, h3 {
+            page-break-after: avoid;
+        }
+        /*
+        Uncomment the following rule if you want *each* main topic to start on a new page.
+        This will increase the page count significantly (minimum 12 pages for 12 topics).
+        .topic {
+             page-break-after: always;
+        }
+        .topic:last-child {
+            page-break-after: auto;
+        }
+        */
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Data Structures & Algorithms Cheatsheet</h1>
+            <p class="subtitle">For Contributors on Outlier's Model Playground</p>
+        </header>
+
+        <main>
+            <!-- Topic 1: Dijkstra's Algorithm -->
+            <article class="topic">
+                <h2>1. Dijkstra's Algorithm</h2>
+                <h3>Definition</h3>
+                <p>Dijkstra's algorithm is used to find the shortest paths from a single source node to all other nodes in a weighted graph (non-negative weights).</p>
+                <h3>Key Idea</h3>
+                <p>Use a <strong>priority queue (min-heap)</strong> to always expand the node with the current shortest known distance.</p>
+                <h3>Java Implementation</h3>
+<pre><code>import java.util.*;
+
+class Dijkstra {
+    static class Pair {
+        int node, dist;
+        Pair(int node, int dist) {
+            this.node = node;
+            this.dist = dist;
+        }
+    }
+
+    public static int[] dijkstra(int V, List&lt;List&lt;Pair&gt;&gt; adj, int src) {
+        int[] dist = new int[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        PriorityQueue&lt;Pair&gt; pq = new PriorityQueue&lt;&gt;(Comparator.comparingInt(a -> a.dist));
+        pq.add(new Pair(src, 0));
+
+        while (!pq.isEmpty()) {
+            Pair current = pq.poll();
+            for (Pair neighbor : adj.get(current.node)) {
+                if (dist[current.node] + neighbor.dist < dist[neighbor.node]) {
+                    dist[neighbor.node] = dist[current.node] + neighbor.dist;
+                    pq.add(new Pair(neighbor.node, dist[neighbor.node]));
+                }
+            }
+        }
+        return dist;
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=GazC3A4OQTE" target="_blank">▶ Watch on YouTube: Dijkstra's Algorithm - Computerphile</a>
+            </article>
+
+            <!-- Topic 2: Disjoint Set Union (DSU) -->
+            <article class="topic">
+                <h2>2. Disjoint Set Union (DSU)</h2>
+                <h3>Definition</h3>
+                <p>DSU (Union-Find) is a data structure that keeps track of elements in disjoint (non-overlapping) sets and supports two operations efficiently:</p>
+                <ul>
+                    <li><code>find</code>: determine which set an element belongs to</li>
+                    <li><code>union</code>: merge two sets</li>
+                </ul>
+                <h3>Application</h3>
+                <p>Used in LeetCode 547: Number of Provinces.</p>
+                <h3>Java Code</h3>
+<pre><code>class DSU {
+    int[] parent;
+
+    public DSU(int size) {
+        parent = new int[size];
+        for (int i = 0; i < size; i++) parent[i] = i;
+    }
+
+    public int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]); // Path compression
+        return parent[x];
+    }
+
+    public void union(int a, int b) {
+        parent[find(a)] = find(b);
+    }
+
+    public int countSets() {
+        Set&lt;Integer&gt; unique = new HashSet&lt;&gt;();
+        for (int i = 0; i < parent.length; i++)
+            unique.add(find(i));
+        return unique.size();
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=8f1XPm4WOUc" target="_blank">▶ Watch on YouTube: Disjoint Set Union-Find - NeetCode</a>
+            </article>
+
+            <!-- Topic 3: DFS -->
+            <article class="topic">
+                <h2>3. DFS – LeetCode 200: Number of Islands</h2>
+                <h3>Definition</h3>
+                <p>DFS is used to explore all nodes in a graph from a starting node by going as deep as possible before backtracking.</p>
+                <h3>Java Code</h3>
+<pre><code>public class Solution {
+    public int numIslands(char[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++)
+            for (int j = 0; j < grid[0].length; j++)
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j);
+                    count++;
+                }
+        return count;
+    }
+
+    private void dfs(char[][] grid, int i, int j) {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == '0')
+            return;
+
+        grid[i][j] = '0'; // Mark visited
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=pV2kpPD66nE" target="_blank">▶ Watch on YouTube: Number of Islands - NeetCode</a>
+            </article>
+
+            <!-- Topic 4: BST Inorder Traversal -->
+            <article class="topic">
+                <h2>4. BST - Print in Ascending Order (Inorder Traversal)</h2>
+                <h3>Definition</h3>
+                <p>In a Binary Search Tree, performing an <strong>inorder traversal</strong> (left → root → right) prints values in ascending order.</p>
+                <h3>Java Code</h3>
+<pre><code>class Node {
+    int val;
+    Node left, right;
+
+    Node(int val) {
+        this.val = val;
+    }
+}
+
+public void inorder(Node root) {
+    if (root != null) {
+        inorder(root.left);
+        System.out.print(root.val + " ");
+        inorder(root.right);
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=5dySuyZf9_4" target="_blank">▶ Watch on YouTube: Inorder Tree Traversal - GeeksforGeeks</a>
+            </article>
+            
+            <!-- Topic 5: BST Insertion -->
+            <article class="topic">
+                <h2>5. BST Insertion</h2>
+                <h3>Definition</h3>
+                <p>Insert a value such that the BST properties are maintained: Left child &lt; Root &lt; Right child.</p>
+                <h3>Java Code</h3>
+<pre><code>public Node insert(Node root, int val) {
+    if (root == null) return new Node(val);
+
+    if (val < root.val)
+        root.left = insert(root.left, val);
+    else
+        root.right = insert(root.right, val);
+
+    return root;
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=wcIRPqTR3Kc" target="_blank">▶ Watch on YouTube: Binary Search Tree Insertion - WilliamFiset</a>
+            </article>
+
+            <!-- Topic 6: Tree Traversals -->
+            <article class="topic">
+                <h2>6. Tree Traversals – Inorder, Preorder, Postorder</h2>
+                <h3>Definitions</h3>
+                <ul>
+                    <li><strong>Inorder:</strong> Left → Root → Right</li>
+                    <li><strong>Preorder:</strong> Root → Left → Right</li>
+                    <li><strong>Postorder:</strong> Left → Right → Root</li>
+                </ul>
+                <h3>Java Example</h3>
+<pre><code>void inorder(Node root) {
+    if (root != null) {
+        inorder(root.left);
+        System.out.print(root.val + " ");
+        inorder(root.right);
+    }
+}
+
+void preorder(Node root) {
+    if (root != null) {
+        System.out.print(root.val + " ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+}
+
+void postorder(Node root) {
+    if (root != null) {
+        postorder(root.left);
+        postorder(root.right);
+        System.out.print(root.val + " ");
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=6oL-0TdVy28" target="_blank">▶ Watch on YouTube: Tree Traversal Algorithms - freeCodeCamp</a>
+            </article>
+
+            <!-- Topic 7: Binary Tree vs BST -->
+            <article class="topic">
+                <h2>7. Binary Tree vs Binary Search Tree</h2>
+                <ul>
+                    <li><strong>Binary Tree:</strong> Each node has at most two children. There is no specific ordering of node values.</li>
+                    <li><strong>BST (Binary Search Tree):</strong> A binary tree where the left subtree contains values less than the root, and the right subtree contains values greater than the root.</li>
+                </ul>
+                <h3>Example</h3>
+<pre><code>// Binary Tree (no order)
+     1
+    / \
+   2   3
+
+// Binary Search Tree (ordered)
+     5
+    / \
+   3   7</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=pYT9F8_SSqY" target="_blank">▶ Watch on YouTube: Binary Trees vs. Binary Search Trees - TECH DOSE</a>
+            </article>
+
+            <!-- Topic 8: Minimum Spanning Tree (MST) -->
+            <article class="topic">
+                <h2>8. Minimum Spanning Tree (MST)</h2>
+                <h3>Definition</h3>
+                <p>A subset of edges from a connected, edge-weighted graph that connects all the vertices together, without any cycles and with the minimum possible total edge weight.</p>
+                <h3>Algorithms</h3>
+                <ul>
+                    <li><strong>Prim's Algorithm:</strong> Grows the MST from a starting vertex by greedily adding the cheapest edge connecting a vertex in the MST to a vertex outside the MST.</li>
+                    <li><strong>Kruskal's Algorithm:</strong> Sorts all edges by weight and adds them to the MST as long as they don't form a cycle (checked using DSU).</li>
+                </ul>
+                <h3>Use Case</h3>
+                <p>Network design, connecting cities with roads, circuit design.</p>
+                <a class="video-link" href="https://www.youtube.com/watch?v=4ZlRH0eK-qQ" target="_blank">▶ Watch on YouTube: Prim's vs Kruskal's Algorithm Explained - Abdul Bari</a>
+            </article>
+
+            <!-- Topic 9: Floyd-Warshall Algorithm -->
+            <article class="topic">
+                <h2>9. Floyd-Warshall Algorithm</h2>
+                <h3>Definition</h3>
+                <p>An all-pairs shortest path algorithm that finds the shortest distances between every pair of vertices in a weighted graph. It works with both positive and negative edge weights but not negative cycles.</p>
+                <h3>Java Code</h3>
+<pre><code>void floydWarshall(int[][] dist) {
+    int V = dist.length;
+    for (int k = 0; k < V; k++) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][k] != Integer.MAX_VALUE 
+                        && dist[k][j] != Integer.MAX_VALUE 
+                        && dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}</code></pre>
+                <a class="video-link" href="https://www.youtube.com/watch?v=oNI0rf2P9gE" target="_blank">▶ Watch on YouTube: Floyd-Warshall Algorithm - Abdul Bari</a>
+            </article>
+
+            <!-- Topic 10: Dynamic Programming -->
+            <article class="topic">
+                <h2>10. When to Use Dynamic Programming (DP)?</h2>
+                <h3>Indicators</h3>
+                <p>Look for problems that ask for:</p>
+                <ul>
+                    <li>Counting the number of ways to do something ("Count of ways")</li>
+                    <li>Finding the minimum or maximum cost/value ("Minimum/maximum operations")</li>
+                    <li>Finding a solution among all possible solutions ("All possible ways")</li>
+                </ul>
+                <p>The problem must also have:</p>
+                <ul>
+                    <li><strong>Optimal Substructure:</strong> The optimal solution to the main problem can be constructed from the optimal solutions of its subproblems.</li>
+                    <li><strong>Overlapping Subproblems:</strong> The same subproblems are solved multiple times.</li>
+                </ul>
+                <h3>Techniques</h3>
+                <ul>
+                    <li><strong>Memoization (Top-Down):</strong> A recursive approach where you store (cache) the results of expensive function calls and return the cached result when the same inputs occur again.</li>
+                    <li><strong>Tabulation (Bottom-Up):</strong> An iterative approach where you solve the problem "from the bottom up" by filling out a table, starting from the base cases.</li>
+                </ul>
+                <a class="video-link" href="https://www.youtube.com/watch?v=oBt53YbR9Kk" target="_blank">▶ Watch on YouTube: Dynamic Programming Explained - freeCodeCamp</a>
+            </article>
+
+            <!-- Topic 11: DFS vs BFS -->
+            <article class="topic">
+                <h2>11. DFS vs BFS</h2>
+                <h3>DFS (Depth-First Search)</h3>
+                <ul>
+                    <li><strong>Structure:</strong> Uses a Stack (or recursion).</li>
+                    <li><strong>Pathfinding:</strong> Does not guarantee the shortest path.</li>
+                    <li><strong>Exploration:</strong> Goes as deep as possible down one path before backtracking.</li>
+                    <li><strong>Use Cases:</strong> Detecting cycles, pathfinding, topological sorting, connected components.</li>
+                </ul>
+                <h3>BFS (Breadth-First Search)</h3>
+                <ul>
+                    <li><strong>Structure:</b> Uses a Queue.</li>
+                    <li><strong>Pathfinding:</strong> Finds the shortest path in an <strong>unweighted</strong> graph.</li>
+                    <li><strong>Exploration:</strong> Explores level by level (all neighbors of a node before moving to the next level).</li>
+                    <li><strong>Use Cases:</strong> Shortest path in unweighted graphs (like LeetCode's "Rotting Oranges"), web crawlers.</li>
+                </ul>
+                <a class="video-link" href="https://www.youtube.com/watch?v=PmmTjLqj4ss" target="_blank">▶ Watch on YouTube: Difference Between BFS and DFS - GeeksforGeeks</a>
+            </article>
+
+            <!-- Topic 12: Topological Sort -->
+            <article class="topic">
+                <h2>12. Topological Sort</h2>
+                <h3>Definition</h3>
+                <p>A linear ordering of nodes in a <strong>Directed Acyclic Graph (DAG)</strong> such that for every directed edge from node <code>u</code> to node <code>v</code>, node <code>u</code> comes before node <code>v</code> in the ordering.</p>
+                <h3>Use Cases</h3>
+                <p>Task scheduling, course prerequisites, build system dependency resolution.</p>
+                <h3>Note</h3>
+                <p>You can use either <strong>DFS</strong> (with a stack to store the finish order) or <strong>Kahn's Algorithm (BFS-based)</strong> which uses in-degrees of nodes.</p>
+                <a class="video-link" href="https://www.youtube.com/watch?v=cIBFEhD-sVY" target="_blank">▶ Watch on YouTube: Topological Sort Algorithm - WilliamFiset</a>
+            </article>
+
+        </main>
+    </div>
+
+</body>
+</html>
+"""
+
+output_filename = "DSA_Cheatsheet_for_Outlier.pdf"
+
+print(f"Generating PDF: {output_filename}...")
+
+try:
+    # Use HTML(string=...) to render the HTML content directly
+    HTML(string=html_content).write_pdf(output_filename)
+    print(f"PDF generated successfully: {output_filename}")
+    print("\nNote: The exact page count depends on the rendering engine, paper size, and margins.")
+    print("I've adjusted the `@page` margin to `1.5cm` to help fit more content per page.")
+    print("If you need more pages, consider increasing font sizes, line heights, or margins in the CSS.")
+    print("For fewer pages, reduce these values. You can also uncomment `page-break-after: always;` on `.topic` for each topic to start a new page.")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+    print("\nCommon issues:")
+    print("1. Missing system dependencies (Cairo, Pango, GDK-Pixbuf). Refer to WeasyPrint documentation for installation.")
+    print("2. 'WeasyPrint' Python package not installed (`pip install WeasyPrint`).")
+    print("3. Ensure you have the necessary system libraries for font rendering and graphics.")
