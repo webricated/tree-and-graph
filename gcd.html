@@ -1,0 +1,253 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webricated - Cake Party Planner</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #0077cc;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #0077cc;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Webricated</h1>
+        <h2>Cake Party Planner</h2>
+        <input type="number" id="n" placeholder="Enter N (pieces of Cake 1)">
+        <input type="number" id="m" placeholder="Enter M (pieces of Cake 2)">
+        <button onclick="calculateGCD()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <footer>© 2025 Webricated</footer>
+
+    <script>
+        function calculateGCD() {
+            const n = parseInt(document.getElementById('n').value);
+            const m = parseInt(document.getElementById('m').value);
+
+            if (isNaN(n) || isNaN(m) || n <= 0 || m <= 0) {
+                document.getElementById('result').innerText = "Please enter valid positive numbers.";
+                return;
+            }
+
+            let fac = 1;
+            let res = 1;
+            while (fac <= n && fac <= m) {
+                if (n % fac === 0 && m % fac === 0) {
+                    res = fac;
+                }
+                fac++;
+            }
+
+            document.getElementById('result').innerText = `Maximum number of people: ${res}`;
+        }
+    </script>
+
+</body>
+</html>
+ -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webricated - Coding Questions and Solutions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #0077cc;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .qa-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 8px;
+            color: #0077cc;
+        }
+
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 15px;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Webricated - Coding Questions & Solutions
+</header>
+
+<div class="container">
+
+    <!-- Question 1 -->
+    <div class="qa-card">
+        <div class="question-title">
+            🍰 1. Cake Pieces Distribution
+        </div>
+
+        <div class="section-title">📝 Question</div>
+        <div>
+            You are given two cakes. The first cake has <b>N</b> pieces and the second cake has <b>M</b> pieces. 
+            Find the maximum number of people who can equally get a whole number of pieces from both cakes, without cutting or wasting any piece.
+        </div>
+
+        <div class="section-title">💡 Approach</div>
+        <div>
+            To ensure every person gets the same number of pieces of each cake and all pieces are used, we need to divide the cakes equally. 
+            This means finding the <b>Greatest Common Divisor (GCD)</b> of N and M. The GCD gives the largest number of people that can divide both cakes equally.
+        </div>
+
+        <div class="section-title">💻 Code (Java)</div>
+        <pre><code>import java.util.Scanner;
+
+public class GCDCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int N_pieces = scanner.nextInt();
+        int M_pieces = scanner.nextInt();
+        int fac = 1;
+        int res = 1;
+
+        while (fac <= N_pieces && fac <= M_pieces) {
+            if (N_pieces % fac == 0 && M_pieces % fac == 0) {
+                res = fac;
+            }
+            fac++;
+        }
+
+        System.out.println(res);
+        scanner.close();
+    }
+}</code></pre>
+    </div>
+
+    <!-- Add More Questions Below in Similar Format -->
+
+</div>
+
+<footer>
+    © 2025 Webricated | All rights reserved.
+</footer>
+
+</body>
+</html>
