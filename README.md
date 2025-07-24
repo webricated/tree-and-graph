@@ -73,3 +73,5 @@ Implement a class `Main` (or `SegmentTree`) with:
 * A constructor to initialize the segment tree with the given array.
 * A method `update(int i, int val)` to update the array.
 * A method `query(int l, int r)` to return the sum in range `[l, r]`.
+
+https://en.algorithmica.org/hpc/data-structures/segment-trees/
